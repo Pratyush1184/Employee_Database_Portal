@@ -1,0 +1,161 @@
+module.exports=((app,db)=>{
+const Op=db.Sequelize.Op;
+  app.get('/projects',(req,res)=>{
+    db.project.findAll().then(projects=>{
+      res.json(projects);
+    })
+  });
+
+  app.get('/project/:id',(req,res)=>{
+    db.project.findAll({
+      where:{
+        'id':req.params.id
+      },
+      attributes:['project_id','name']
+    }).then(projects=>{
+      res.json(projects);
+    })
+  });
+
+  app.get('/projectc',(req,res)=>{
+      db.project.findAndCountAll({
+        include:[
+          {
+            model: db.employee,
+            freezeTableName:true,
+            where:{
+              'id':{
+                [Op.gte]:[100]
+              }
+            }
+          }
+        ],
+        where:{
+          'name':{
+            [Op.like]:'Pr%'
+          }
+        },
+        offset:0//,
+//        limit:2
+      }).then(result=>{
+        res.json(result.rows);
+        console.log(result.count);
+        console.log(result.rows);
+      })
+  });
+app.get('/projectd',(req,res)=>{
+    db.project.findAll({
+      include:[
+        {
+          model:db.employee,
+          freezeTableName:true,
+          where:{
+            'id':{
+              [Op.gte]:[100]
+            }
+          },
+          include:[
+            {
+              model:db.salary,
+              where:{
+                'CTC':{
+                  [Op.gte]:[6000]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }).then(result=>{
+      res.json(result);
+    })
+});
+
+  app.post('/project/enter',(req,res)=>{
+    try{
+      db.project.create({
+        'name':req.body.name,
+        'domain':req.body.domain,
+        'project_id':req.body.project_id
+      }).then(project=>{
+        res.json(project);
+      })
+    }
+    catch(e){
+      console.log("Unable to make an entry");
+      res.write("Error!!!! Check your console");
+    }
+  })
+  app.post('/join',(req,res)=>{
+    console.log(req.body);
+    db.Project_emp.bulkCreate(req.body).then(entries=>{
+      res.json(entries);
+    })
+  });
+  app.post('/project/entermult',(req,res)=>{
+    try{
+      db.project.bulkCreate(req.body).then(projects=>{
+        res.json(projects);
+      })
+    }
+    catch(e){
+      console.log("Unable to make entries.");
+      res.write("Error!!!! Check your console");
+    }
+  });
+
+  app.delete('/projects/:id',(req,res)=>{
+    db.project.destroy({
+      where:{
+        'project_id':req.params.id
+      }
+    }).then(projects=>{
+        res.json(projects);
+    })
+  });
+
+  app.put('/project/:id',(req,res)=>{
+    var temp;
+    if(req.body.name){
+      temp=db.project.update({
+        'name':req.body.name
+      },
+      {
+            where:{
+              'id':req.params.id
+            }
+      })
+    }
+    if(req.body.id){
+      temp=db.project.update({
+        'id':req.body.id
+      },
+      {
+            where:{
+              'id':req.params.id
+            }
+      })
+    }
+    if(req.body.role){
+      temp=db.project.update({
+        'role':req.body.role
+      },
+      {
+            where:{
+              'id':req.params.id
+            }
+      })
+    }
+    if(req.body.project_id){
+      temp=db.project.update({
+        'project_id':req.body.project_id
+      },
+      {
+            where:{
+              'id':req.params.id
+            }
+      })
+    }
+    res.json(temp);
+  });
+});

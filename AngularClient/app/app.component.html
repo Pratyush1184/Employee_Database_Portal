@@ -1,0 +1,104 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<div class="container-fluid">
+    <a><h1 class="text-center font-weight-bold font-italic">Employee Database Portal</h1></a>
+</div>
+<form #userForm="ngForm">
+  <!-- {{userForm.value|json}} -->
+    <div class="card text-center">
+        <div class="card-header">
+            <!-- {{routecheck()}} -->
+          <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+              <a (click)="activate=0; flag=0" [class.active]="(activate==0?true:false)" class="nav-link">Display</a>
+            </li>
+            <li class="nav-item">
+              <a (click)="activate=3; flag=0" [class.active]="(activate==3?true:false)" class="nav-link">Insert</a>
+            </li>
+            <li class="nav-item">
+              <a (click)="activate=1; flag=0" [class.active]="(activate==1?true:false)" class="nav-link" >Delete</a>
+            </li>
+            <li class="nav-item">
+              <a (click)="activate=2; flag=0" [class.active]="(activate==2?true:false)" class="nav-link" >Update</a>
+            </li>  
+          </ul>
+        </div>
+        <img class="card-img" src="./../assets/Images/employees.png" alt="Card image">
+        <ng-template [ngIf]="activate==0" [ngIfElse]="second">
+        <div *ngIf="check()" class="card-body">
+          <h5 class="card-title">Display Queries</h5>
+          <br>
+          <p class="card-text">Display the list of Employees.</p>
+          <a routerLink="/employees" class="btn btn-primary btn-sm btn-lg"(click)="emplist()">Go</a>
+          <br><br>
+          <p class="card-text">Display the list of Projects.</p>
+          <a routerLink="/projects" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+          <br><br>
+          <p class="card-text">Display the list of Packages.</p>
+          <a routerLink="/salaries" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+          <br><br>
+          <!-- <p class="card-text">Display the list of Employees with salary.</p>
+          <a href="#" class="btn btn-primary btn-sm btn-lg">Go somewhere</a>
+          <br><br>
+          <p class="card-text">Display the list of Employees with projects.</p>
+          <a href="#" class="btn btn-primary btn-sm btn-lg">Go somewhere</a>
+          <br><br> -->
+        </div></ng-template>
+        <ng-template #second>
+          <ng-template [ngIf]="activate==1" [ngIfElse]="third">
+          <div *ngIf="check()" class="card-body">
+              <h5 class="card-title">Delete Queries</h5>
+              <br>
+              <p class="card-text">Delete the employee details by id.</p>
+              <a routerLink="/empdel" class="btn btn-primary btn-sm btn-lg"(click)="emplist()">Go</a>
+              <br><br>
+              <!-- <p class="card-text">Display the list of Projects.</p>
+              <a routerLink="/projects" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+              <br><br>
+              <p class="card-text">Display the list of Packages.</p>
+              <a routerLink="/salaries" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+              <br><br> -->
+            </div>
+          </ng-template>
+        </ng-template>
+        <ng-template #third>
+          <ng-template [ngIf]="activate==2" [ngIfElse]="fourth">
+              <div *ngIf="check()" class="card-body">
+                  <h5 class="card-title">Update Queries</h5>
+                  <br>
+                  <p class="card-text">Update the employees details.</p>
+                  <a routerLink="/empupd" class="btn btn-primary btn-sm btn-lg"(click)="emplist()">Go</a>
+                  <br><br>
+                  <!-- <p class="card-text">Display the list of Projects.</p>
+                  <a routerLink="/projects" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+                  <br><br>
+                  <p class="card-text">Display the list of Packages.</p>
+                  <a routerLink="/salaries" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+                  <br><br> -->
+                </div>
+                
+          </ng-template>
+        </ng-template>   
+        <ng-template #fourth>
+            <ng-template [ngIf]="activate==3">
+            <div *ngIf="check()" class="card-body">
+                <h5 class="card-title">Insert Queries</h5>
+                <br>
+                <p class="card-text">Insert into employees:</p>
+                <a routerLink="/empinsert" class="btn btn-primary btn-sm btn-lg"(click)="emplist()">Go</a>
+                <br><br>
+                <!-- <p class="card-text">Display the list of Projects.</p>
+                <a routerLink="/projects" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+                <br><br>
+                <p class="card-text">Display the list of Packages.</p>
+                <a routerLink="/salaries" class="btn btn-primary btn-sm btn-lg" (click)="emplist()">Go</a>
+                <br><br> -->
+              </div>
+            </ng-template>
+          </ng-template>
+  
+      </div>
+</form>
+<router-outlet *ngIf="!check()"></router-outlet>

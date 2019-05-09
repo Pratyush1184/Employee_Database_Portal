@@ -1,0 +1,31 @@
+<div class="container-fluid">
+        <h1>Enter Employee Details:</h1>
+        <!--{{userForm.value|json}}-->
+        <br>
+        <!-- {{userModel|json}} -->
+        <p [innerHtml]="errormessage"></p>
+        <form #userForm="ngForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label>Employee ID:</label>
+            <input required type="text" class="form-control" [(ngModel)]="userModel.id" name="id">
+          </div>
+  
+          <div class="form-group">
+            <label>Name:</label>
+            <input required type="text" class="form-control" [(ngModel)]="userModel.name" name="name">
+          </div>
+  
+          <div class="form-group">
+            <label>Role:</label>
+            <select required class="custom-select" [(ngModel)]="userModel.role" name="role">
+              <option selected>Select role....</option>
+              <option *ngFor="let role of roles">{{role}}</option>
+            </select>
+          </div>
+          <button [disabled]="userForm.form.invalid" class="btn btn-primary" type="submit">Submit form</button>
+        </form>
+      </div>
+    <!--Input values=Text in the field,
+        Radiobutton values=value attribute,
+        select tag=value attribute if present else text that's default,
+        checkbox values=true/false-->
